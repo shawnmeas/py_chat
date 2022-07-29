@@ -6,7 +6,9 @@ def get_local_ip():
 	s.connect(("8.8.8.8", 80))
 	return s.getsockname()[0]
 
-HOST = get_local_ip()
+#temporarily hardcoded to localhost for sake of testing convenience
+#HOST = get_local_ip()
+HOST = "127.0.0.1"
 PORT = 54321
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,4 +25,5 @@ with conn:
 		data = conn.recv(1024)
 		if not data:
 			break
+		print(f"{addr}: {data.decode()}")
 		conn.sendall(data)
