@@ -1,13 +1,22 @@
 import socket
 
-HOST = "127.0.0.1"
+#Kind of a hacky way to get local IP using only socket, but works.
+def get_local_ip():
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	s.connect(("8.8.8.8", 80))
+	return s.getsockname()[0]
+
+HOST = get_local_ip()
 PORT = 54321
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((HOST, PORT))
-server_socket.listen()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen()
 
-conn, addr = server_socket.accept()
+if s:
+	print(f"Server started at {HOST}:{PORT}")
+
+conn, addr = s.accept()
 with conn:
 	print(f"{addr} connected")
 	while True:
